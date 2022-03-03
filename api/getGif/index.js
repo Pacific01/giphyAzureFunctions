@@ -1,13 +1,11 @@
 module.exports = async function (context, req) {
-    context.log('JavaScript HTTP trigger function processed a request.');
-
-    const name = (req.query.name || (req.body && req.body.name));
-    const responseMessage = name
-        ? "Hello, " + name + ". This HTTP triggered function executed successfully."
-        : "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.";
-
-    context.res = {
-        // status: 200, /* Defaults to 200 */
-        body: responseMessage
-    };
+  try {
+    const response =  await axios.get('http://api.giphy.com/v1/gifs/search?api_key=x4xjAYV288NfnVoOtZCgQbMgjJVxJxGu&q=azure')
+    context.log(`statusCode: ${response.statusCode}`);
+    context.log(response);
+    return response; // or return a custom object using properties from response
+  } catch (error) {
+    // If the promise rejects, an error will be thrown and caught here
+    context.error(error);
+  }
 }
